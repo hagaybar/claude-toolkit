@@ -50,7 +50,8 @@ git clone https://github.com/hagaybar/claude-toolkit
 cd claude-toolkit && ./install-skills.sh
 ```
 
-It links every skill into `~/.claude/skills` (Claude Code) and `~/.agents/skills` (Codex).
+It links every skill into `~/.claude/skills` (Claude Code) and `~/.agents/skills` (Codex), and the
+slash commands in `commands/` (e.g. `/dashboard`) into `~/.claude/commands`.
 
 ## No real identifiers
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Link every skill in skills/ into ~/.claude/skills (Claude Code) and ~/.agents/skills (Codex),
-# prune links to skills since deleted here, and refresh the Docker Sandboxes (sbx) skill store
+# link commands/*.md into ~/.claude/commands, prune links to skills since deleted here, and refresh the Docker Sandboxes (sbx) skill store
 # when sbx is present. Idempotent. A real (non-link) folder in the way is moved to
 # ~/.cache/claude-skills-backup/<date>/ first. Plugins install separately (see README).
 set -euo pipefail
@@ -24,6 +24,14 @@ for DEST in "${DESTS[@]}"; do
     [ -e "$target" ] && continue
     rm "$link"; echo "removed stale link $link"; removed+=("$(basename "$link")")
   done
+done
+# Slash commands: link commands/*.md into ~/.claude/commands (Claude Code).
+CMDS="${CLAUDE_DIR:-$HOME/.claude}/commands"; mkdir -p "$CMDS"
+for src in "$ROOT"/commands/*.md; do
+  [ -e "$src" ] || continue
+  dest="$CMDS/$(basename "$src")"
+  if [ -L "$dest" ]; then rm "$dest"; elif [ -e "$dest" ]; then mkdir -p "$BACKUP"; mv "$dest" "$BACKUP/"; fi
+  ln -s "$src" "$dest"; echo "linked $dest"
 done
 if command -v sbx >/dev/null 2>&1 && [ "${SKIP_SBX:-0}" != 1 ]; then
   for name in $(printf '%s\n' "${removed[@]}" | sort -u); do

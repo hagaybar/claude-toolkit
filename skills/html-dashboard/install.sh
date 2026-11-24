@@ -4,9 +4,9 @@
 # real file is backed up to <name>.bak.<epoch> first.
 set -euo pipefail
 
-# dotfiles root = three levels up from this script (.../claude/skills/html-dashboard/install.sh)
+# repo root = two levels up from this script (.../skills/html-dashboard/install.sh)
 SKILL_DIR="$(cd "$(dirname "$0")" && pwd)"
-DOTFILES_ROOT="$(cd "$SKILL_DIR/../../.." && pwd)"
+REPO_ROOT="$(cd "$SKILL_DIR/../.." && pwd)"
 CLAUDE_DIR="${CLAUDE_DIR:-$HOME/.claude}"
 
 mkdir -p "$CLAUDE_DIR/skills" "$CLAUDE_DIR/commands"
@@ -24,5 +24,5 @@ link() {
 }
 
 link "$SKILL_DIR" "$CLAUDE_DIR/skills/html-dashboard"
-link "$DOTFILES_ROOT/claude/commands/dashboard.md" "$CLAUDE_DIR/commands/dashboard.md"
+link "$REPO_ROOT/commands/dashboard.md" "$CLAUDE_DIR/commands/dashboard.md"
 echo "done."
