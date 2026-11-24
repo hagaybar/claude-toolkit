@@ -252,7 +252,24 @@ export function checkBash(command: string, known: readonly Known[], c: Config): 
       }
     }
 
-    // 5. staging a secret file
+    // 5. making a repository public exposes its whole history at once
+    if (verb === 'gh') {
+      const t = seg.text
+      const sub = w.slice(1, 3).join(' ')
+      const pub =
+        (sub === 'repo create' && w.includes('--public')) ||
+        (sub === 'repo edit' && /--visibility(=|\s+)["']?public\b/.test(t)) ||
+        (w[1] === 'api' && /(visibility["']?\s*[=:]\s*["']?public|private["']?\s*[=:]\s*["']?false)/i.test(t))
+      if (pub) {
+        out.push({
+          rule: 'make-public',
+          reason: 'this would make a GitHub repository public, exposing its whole history',
+          hint: 'scan the full history first (gitleaks git); the user changes visibility in their own terminal',
+        })
+      }
+    }
+
+    // 6. staging a secret file
     if (verb === 'git' && w.includes('add')) {
       const staged = w.slice(w.indexOf('add') + 1).filter(x => !x.startsWith('-') && isForbiddenPath(x, c))
       if (staged.length > 0) {
@@ -293,7 +310,7 @@ export type GitIntent =
   | { kind: 'add-all'; cwd?: string }
   | { kind: 'commit'; cwd?: string; all: boolean }
   | { kind: 'push'; cwd?: string }
-  | { kind: 'gh'; files: string[] }
+  | { kind: 'gh'; files: string[]; outbound: boolean; text: string }
 
 export function gitIntents(command: string): GitIntent[] {
   const out: GitIntent[] = []
@@ -334,7 +351,12 @@ export function gitIntents(command: string): GitIntent[] {
       if (w[1] === 'gist' && w[2] === 'create') {
         files.push(...w.slice(3).filter(x => !x.startsWith('-')))
       }
-      out.push({ kind: 'gh', files })
+      const write = /^(create|comment|edit|review|close|reopen|merge|upload)$/.test(w[2] ?? '')
+      const apiWrite =
+        w[1] === 'api' && w.some((x, j) => /^(-f|-F|--field|--raw-field|--input)$/.test(x) ||
+          (/^(-X|--method)$/.test(x) && /^(POST|PATCH|PUT)$/i.test(w[j + 1] ?? '')))
+      const outbound = (/^(issue|pr|release|gist|repo)$/.test(w[1] ?? '') && write) || apiWrite
+      out.push({ kind: 'gh', files, outbound, text: seg.text })
     }
   }
   return out

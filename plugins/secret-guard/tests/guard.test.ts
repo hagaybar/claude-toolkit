@@ -27,6 +27,10 @@ function world(on: On, git: Record<string, string> = {}): string[] {
   on('session.cwd', () => ({ value: '/repo' }))
   on('process.run', ($, e) => {
     const argv = e.argv
+    if (argv[0] === 'scanner') {
+      const bad = String(e.init?.stdin ?? '').includes('PERSONAL-DATA')
+      return { value: { exitCode: bad ? 1 : 0, stdout: bad ? 'RuleID: email-address' : '', stderr: '', isStdoutTruncated: false, isStderrTruncated: false } }
+    }
     if (argv[0] === 'env') {
       return { value: { exitCode: 0, stdout: `HOME=/home/x\u0000FAKE_API_KEY=${FAKE_VALUE}\u0000SHORT_TOKEN=abc\u0000`, stderr: '', isStdoutTruncated: false, isStderrTruncated: false } }
     }
@@ -179,9 +183,9 @@ describe('redaction', () => {
   test('scrubs a known value before a row is stored', async ($, on) => {
     world(on)
     const stored: string[] = []
-    on('session.append', ($, e) => {
+    on('session.append', ($, e, next) => {
       stored.push(JSON.stringify(e.message.content))
-      return { value: { message: e.message, uuid: 'row-1' } } as never
+      return next(e)
     })
     // Nothing beneath the test stores rows, so the call itself rejects; what
     // matters is the row the guard handed down.
@@ -193,3 +197,31 @@ describe('redaction', () => {
     expect(String(stored[0])).toContain('[redacted:FAKE_API_KEY]')
   })
 })
+
+describe('github exposure', () => {
+  test('blocks making a repository public, allows a private one', async ($, on) => {
+    world(on)
+    for (const command of [
+      'gh repo create demo --public --source . --push',
+      'gh repo edit owner/demo --visibility public',
+      'gh api -X PATCH repos/owner/demo -f visibility=public',
+    ]) {
+      const r = await call($, { tool: 'Bash', command })
+      expect(String(r.deny)).toContain('make-public')
+    }
+    const ok = await call($, { tool: 'Bash', command: 'gh repo create demo --private --source .' })
+    expect(ok.deny).toBeUndefined()
+  })
+
+  test('the outbound scan refuses flagged GitHub text and passes clean text', { options: { outboundScan: 'scanner --stdin' } }, async ($, on) => {
+    world(on)
+    const bad = await call($, { tool: 'Bash', command: 'gh issue comment 5 --body "PERSONAL-DATA here"' })
+    expect(String(bad.deny)).toContain('outbound-scan')
+    expect(String(bad.deny)).toContain('email-address')
+    const good = await call($, { tool: 'Bash', command: 'gh issue comment 5 --body "all fine"' })
+    expect(good.deny).toBeUndefined()
+    const read = await call($, { tool: 'Bash', command: 'gh issue view 5 PERSONAL-DATA' })
+    expect(read.deny).toBeUndefined()
+  })
+})
+
