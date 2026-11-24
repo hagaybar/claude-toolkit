@@ -1,0 +1,8 @@
+{
+  "_note": "Corrected 2026-11-12 (evaluation DG-23): shape observed in TAU Sandbox; path is the storage location after the link moved the file.",
+  "pid": "10000000000000010",
+  "label": "document",
+  "size": 1024000,
+  "path": "EXAMPLE_INST/storage/alma/AB/CD/EF/document.pdf",
+  "thumbnail_url": "..."
+}

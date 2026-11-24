@@ -1,0 +1,18 @@
+{
+  "external_id": "ILL-12345",
+  "owner": "MAIN",
+  "partner": {
+    "value": "RELAIS"
+  },
+  "format": {
+    "value": "PHYSICAL"
+  },
+  "citation_type": {
+    "value": "BOOK"
+  },
+  "title": "Introduction to Library Science",
+  "author": "Smith, John A.",
+  "isbn": "978-0-123456-78-9",
+  "publisher": "Academic Press",
+  "year": "2024"
+}

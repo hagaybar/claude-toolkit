@@ -1,0 +1,37 @@
+{
+  "evidence_id": "invoice-electronic-batch-2026-11",
+  "environment": "SANDBOX",
+  "sdk_version": "0.4.5",
+  "execution": "Agent-run with explicit user approval: one manual case (12 Nov) and one batch of ten via Alma-Acquisitions-Automation scripts/close_invoices.py (13 Nov). Raw logs kept locally under output/invoice_closer (gitignored).",
+  "configuration": {"invoice_skip_erp": true, "handle_invoice_payment": true, "active_erp_integration": false, "source": "operator confirmed 12 Nov 2026"},
+  "scope": "11 one-line Rialto invoices (owner AC1) linked to one E_BOOK_OT order line each, line status WAITING_FOR_INVOICE, title with an Available portfolio; plus one PRINTED_BOOK_OT control.",
+  "process": {
+    "op": "process_invoice", "body": {}, "cases": 11, "http_status": 200,
+    "reply_seconds": {"min": 2.3, "max": 39.7, "manual_case": 21.1},
+    "observed": "Reply already showed Ready to be Paid / APPROVED / NOT_PAID; order line CLOSED on the first GET after the reply in all 11.",
+    "verdict": "supported_for_scope"
+  },
+  "pay": {
+    "op": "paid", "cases": 11, "http_status": 200, "reply_seconds_max": 0.8,
+    "payload": {"payment": {"voucher_date": "YYYY-MM-DD", "voucher_number": "SBX-TEST-<invoice number>", "voucher_amount": "<invoice total, 2 decimals>", "voucher_currency": {"value": "USD"}}},
+    "observed": "Invoice CLOSED / PAID, workflow {} , voucher fields recorded, order line still CLOSED.",
+    "verdict": "supported_for_scope"
+  },
+  "rerun": "Second run over the same set: 10 of 10 ALREADY_CLOSED, no writes.",
+  "print_control": {
+    "type": "PRINTED_BOOK_OT", "item_arrival_date": null, "invoice_line_price": 35.29, "order_line_price": 39.95,
+    "op": "process_invoice", "http_status": 200, "reply_seconds": 0.9,
+    "observed": "Invoice stayed InReview / PENDING / NOT_PAID for 3 minutes; order line stayed SENT; no error returned.",
+    "alerts": ["DIFFERENT_VENDOR_ACCOUNT", "DIFF_PRICE_THAN_POLINE", "EDI_INVOICE_OF_EXTERNAL_SYSTEM", "NOT_READY_LINES"],
+    "verdict": "cause_unresolved"
+  },
+  "alert_observation": "One e-book invoice carried DIFF_PRICE_THAN_POLINE and still advanced and closed.",
+  "api_facts": [
+    "GET /acq/po-lines with status=ALL excludes CLOSED lines; status=ALL_WITH_CLOSED includes them",
+    "GET /acq/po-lines search results lack invoice_reference",
+    "q=mms_id~<mms> works on /acq/po-lines",
+    "Portfolio availability is {value: '11', desc: 'Available'}",
+    "Item receipt date is item_data.arrival_date; receiving_date was absent"
+  ],
+  "limits": ["No production claim", "Order (PO) closure not observable via API", "Multi-line and charge-line invoices untested", "Print closure untested", "No real-world payment"]
+}

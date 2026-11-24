@@ -1,0 +1,19 @@
+{
+  "_evaluation_note": "Illustrative, not a captured Alma response. Code 401660 and this body shape are unverified (2026-11-12, see references/evaluation.md BI-30). Real Alma errors carry errorsExist/errorList.error[].errorCode/errorMessage/trackingId.",
+  "status_code": 401660,
+  "error_message": "Barcode already exists",
+  "errorList": {
+    "error": [
+      {
+        "errorCode": "401660",
+        "errorMessage": "Barcode 2239409-10 already exists in the system",
+        "trackingId": "E01-9876543210"
+      }
+    ]
+  },
+  "context": {
+    "issue": "Attempting to create item with existing barcode",
+    "barcode": "2239409-10",
+    "solution": "Barcodes must be unique across the institution. Use a different barcode or update the existing item instead."
+  }
+}

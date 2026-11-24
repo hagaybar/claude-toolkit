@@ -1,0 +1,13 @@
+{
+  "environment": "SANDBOX",
+  "set_id": "20000000000000008",
+  "input_folder": "/path/to/pdf/files",
+  "library_code": "MAIN_LIB",
+  "usage_type": "PRESERVATION_MASTER",
+  "access_rights_value": "",
+  "access_rights_desc": "",
+  "institution_code": "EXAMPLE_INST",
+  "aws_region": "eu-central-1",
+  "output_directory": "./output",
+  "dry_run": true
+}

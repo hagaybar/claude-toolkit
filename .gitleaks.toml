@@ -1,0 +1,42 @@
+title = "claude-toolkit: secrets and identifiers that must never be public"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "exlibris-api-key"
+description = "Ex Libris Alma/Primo API key"
+regex = '''(?:^|[^0-9A-Za-z])(l[78]xx[0-9a-f]{32})\b'''
+secretGroup = 1
+keywords = ["l7xx", "l8xx"]
+
+[[rules]]
+id = "tau-alma-id"
+description = "A real TAU Alma ID (MMS, library, POL line…) ends with the institution suffix 4146: use a placeholder"
+regex = '''\b\d{8,17}4146\b'''
+keywords = ["4146"]
+
+[[rules]]
+id = "real-pol-number"
+description = "A real-looking PO line number: use a placeholder (POL-0xxxx) instead"
+regex = '''\bPOL-[1-9]\d{3,}\b'''
+keywords = ["pol-"]
+
+[[rules]]
+id = "email-address"
+description = "Email address: possible staff or patron personal data"
+regex = '''\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b'''
+keywords = ["@"]
+
+[allowlist]
+description = "Placeholders and the secret-shaped test fixtures of the dashboard engine's redactor"
+regexes = [
+  '''(?i)@example\.(com|org|edu)\b''',
+  '''(?i)noreply|no-reply''',
+  '''git@github\.com''',
+  '''POL-9999999''',
+]
+paths = [
+  '''skills/html-dashboard/tests/test_engine\.py''',
+  '''skills/html-dashboard/engine/assets/mermaid\.min\.js''',
+]

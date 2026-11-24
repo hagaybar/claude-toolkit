@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<item>
+  <!--
+    Empty item element for scan-in operation.
+
+    Usage: POST /almaws/v1/bibs/{mms_id}/holdings/{holding_id}/items/{item_pid}?op=scan
+
+    Query Parameters:
+    - op=scan (mandatory)
+    - library=MAIN (mandatory)
+    - circ_desk=DEFAULT_CIRC_DESK or department=ACQ: send exactly one
+      (corrected 2026-11-12, see references/evaluation.md BI-20)
+    - work_order_type=AcqWorkOrder (optional)
+    - status=CopyCataloging (optional)
+    - done=false (optional; only relevant with department)
+
+    This request places the item in department with work order,
+    preventing automatic "in transit" status after receiving.
+  -->
+</item>

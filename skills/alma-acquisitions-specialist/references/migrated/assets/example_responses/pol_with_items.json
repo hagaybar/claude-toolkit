@@ -1,0 +1,64 @@
+{
+  "number": "POL-01001",
+  "type": {
+    "value": "ONE_TIME",
+    "desc": "One Time"
+  },
+  "status": {
+    "value": "ACTIVE",
+    "desc": "Active"
+  },
+  "vendor": {
+    "value": "RIALTO",
+    "desc": "Rialto Vendor"
+  },
+  "price": {
+    "sum": "180.0",
+    "currency": {
+      "value": "ILS",
+      "desc": "New Israeli Sheqel"
+    }
+  },
+  "resource_metadata": {
+    "mms_id": {
+      "value": "990000000000000002"
+    },
+    "title": "Example Book Title"
+  },
+  "location": [
+    {
+      "holding_id": "20000000000000005",
+      "library": {
+        "value": "MAIN",
+        "desc": "Main Library"
+      },
+      "location": {
+        "value": "STACKS",
+        "desc": "General Stacks"
+      },
+      "copy": [
+        {
+          "pid": "20000000000000006",
+          "barcode": "2239409-10",
+          "base_status": {
+            "value": "1",
+            "desc": "Item in place"
+          },
+          "process_type": "acquisition",
+          "receive_date": null,
+          "receiving_operator": null
+        }
+      ]
+    }
+  ],
+  "fund_distribution": [
+    {
+      "fund_code": {
+        "value": "AAC_FUND",
+        "desc": "Acquisitions Fund"
+      },
+      "percent": 100
+    }
+  ],
+  "invoice_reference": ""
+}

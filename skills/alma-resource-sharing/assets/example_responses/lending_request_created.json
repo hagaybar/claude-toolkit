@@ -1,0 +1,36 @@
+{
+  "request_id": "10000000000000016",
+  "external_id": "ILL-12345",
+  "status": {
+    "value": "REQUEST_CREATED_LEND",
+    "desc": "Created lending request"
+  },
+  "owner": "MAIN",
+  "partner": {
+    "value": "RELAIS",
+    "desc": "RELAIS Partner",
+    "link": "https://api-eu.hosted.exlibrisgroup.com/almaws/v1/partners/RELAIS"
+  },
+  "format": {
+    "value": "PHYSICAL",
+    "desc": "Physical"
+  },
+  "citation_type": {
+    "value": "BOOK",
+    "desc": "Book"
+  },
+  "title": "Introduction to Library Science",
+  "author": "Smith, John A.",
+  "isbn": "978-0-123456-78-9",
+  "publisher": "Academic Press",
+  "year": "2024",
+  "created_date": "2025-01-15Z",
+  "created_time": "2025-01-15T10:30:45.123Z",
+  "last_modified_date": "2025-01-15Z",
+  "last_modified_time": "2025-01-15T10:30:45.123Z",
+  "allow_other_formats": false,
+  "printed": false,
+  "reported": false,
+  "has_active_notes": false,
+  "rs_note": []
+}

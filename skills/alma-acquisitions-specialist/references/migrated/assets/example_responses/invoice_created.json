@@ -1,0 +1,35 @@
+{
+  "id": "10000000000000004",
+  "number": "INV-2025-001",
+  "invoice_date": "2025-10-22Z",
+  "vendor": {
+    "value": "RIALTO",
+    "desc": "Rialto Vendor"
+  },
+  "total_amount": 100.00,
+  "currency": {
+    "value": "ILS",
+    "desc": "New Israeli Sheqel"
+  },
+  "invoice_status": {
+    "value": "ACTIVE",
+    "desc": "Active"
+  },
+  "payment": {
+    "prepaid": false,
+    "internal_copy": false,
+    "payment_status": {
+      "value": "NOT_PAID",
+      "desc": "Not Paid"
+    },
+    "voucher_number": "",
+    "voucher_amount": ""
+  },
+  "creation_date": "2025-10-22Z",
+  "owner": {
+    "value": "MAIN",
+    "desc": "Main Library"
+  },
+  "invoice_line": [],
+  "link": "https://api-eu.hosted.exlibrisgroup.com/almaws/v1/acq/invoices/10000000000000004"
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<item>
+  <!--
+    Empty item element for receiving operation.
+
+    Usage: POST /almaws/v1/acq/po-lines/{pol_id}/items/{item_id}?op=receive
+
+    Query Parameters:
+    - op=receive (mandatory)
+    - receive_date=2025-01-15Z (optional)
+    - department=ACQ (optional)
+    - department_library=MAIN (optional)
+
+    This request marks the item as received and changes status accordingly.
+  -->
+</item>

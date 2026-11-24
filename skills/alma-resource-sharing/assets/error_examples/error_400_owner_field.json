@@ -1,0 +1,26 @@
+{
+  "status_code": 400,
+  "error_message": "Cannot deserialize value of type `java.lang.String` from Object value",
+  "errorList": {
+    "error": [
+      {
+        "errorCode": "400",
+        "errorMessage": "Cannot deserialize value of type `java.lang.String` from Object value (token `JsonToken.START_OBJECT`); nested exception is com.fasterxml.jackson.databind.exc.MismatchedInputException",
+        "trackingId": "E01-1234567890"
+      }
+    ]
+  },
+  "context": {
+    "issue": "Owner field format error in lending request creation",
+    "sent": {
+      "owner": {
+        "value": "MAIN"
+      }
+    },
+    "should_send": {
+      "owner": "MAIN"
+    },
+    "explanation": "The 'owner' field must be a plain string, NOT wrapped in {value: ...} format. The official JSON schema and XSD define owner as a plain string, so this matches the documentation (corrected 2026-11-12, see references/evaluation.md RS-02; this 400 body is historical and was not re-run).",
+    "solution": "Use plain string format: 'owner': 'MAIN' instead of 'owner': {'value': 'MAIN'}"
+  }
+}

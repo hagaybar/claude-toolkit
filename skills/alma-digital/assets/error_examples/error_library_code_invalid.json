@@ -1,0 +1,28 @@
+{
+  "status_code": 400,
+  "error_message": "Mandatory field is missing or invalid",
+  "errorList": {
+    "error": [
+      {
+        "errorCode": "400",
+        "errorMessage": "Mandatory field is missing or invalid. For field library, valid options are: Valid library code.",
+        "trackingId": "E01-1234567890"
+      }
+    ]
+  },
+  "context": {
+    "issue": "Library code validation error in representation creation",
+    "sent": {
+      "library": {
+        "value": "LGBTQ-NLI-2"
+      }
+    },
+    "should_send": {
+      "library": {
+        "value": "LGBTQ"
+      }
+    },
+    "explanation": "The library code must match an actual Alma library code from configuration. Common mistake: copying from MARC 914 field which may contain batch identifiers or collection suffixes (e.g., 'LGBTQ-NLI-2') instead of the base library code ('LGBTQ').",
+    "solution": "Verify library codes via API: GET /almaws/v1/conf/libraries or via Alma UI: Configuration > General > Libraries. Use the exact 'code' field value, not descriptions or MARC field values."
+  }
+}

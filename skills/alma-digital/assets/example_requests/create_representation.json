@@ -1,0 +1,13 @@
+{
+  "access_rights_policy_id": {
+    "value": "",
+    "desc": ""
+  },
+  "is_remote": false,
+  "library": {
+    "value": "MAIN_LIB"
+  },
+  "usage_type": {
+    "value": "PRESERVATION_MASTER"
+  }
+}

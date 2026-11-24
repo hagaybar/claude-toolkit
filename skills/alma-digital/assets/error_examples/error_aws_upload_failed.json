@@ -1,0 +1,30 @@
+{
+  "error_type": "NoCredentialsError",
+  "error_message": "Unable to locate credentials",
+  "context": {
+    "issue": "AWS credentials not configured for S3 upload",
+    "operation": "bucket.upload_file(local_path, s3_key)",
+    "cause": "Environment variables AWS_ACCESS_KEY and AWS_SECRET not set",
+    "solution": "Set AWS credentials in environment:\n\nexport AWS_ACCESS_KEY='your_aws_access_key'\nexport AWS_SECRET='your_aws_secret_key'\nexport ALMA_SB_BUCKET_NAME='your_sandbox_bucket'\nexport ALMA_PROD_BUCKET_NAME='your_production_bucket'\n\nVerify credentials are set:\necho $AWS_ACCESS_KEY\necho $AWS_SECRET"
+  },
+  "common_variations": [
+    {
+      "error_type": "ClientError",
+      "error_code": "NoSuchBucket",
+      "message": "The specified bucket does not exist",
+      "solution": "Verify bucket name in environment variable matches actual S3 bucket name. Check: s3_client.list_buckets()"
+    },
+    {
+      "error_type": "ClientError",
+      "error_code": "AccessDenied",
+      "message": "Access Denied",
+      "solution": "Verify IAM user has s3:PutObject permission on the bucket. Check bucket policy allows uploads from your IAM user."
+    },
+    {
+      "error_type": "ClientError",
+      "error_code": "InvalidAccessKeyId",
+      "message": "The AWS Access Key Id you provided does not exist",
+      "solution": "Verify AWS_ACCESS_KEY is correct. Check for typos or expired credentials."
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "number": "1",
+  "po_line": "POL-01001",
+  "quantity": 1,
+  "price": 50.0,
+  "vat_note": "Standard VAT",
+  "total_price": 50.0,
+  "fund_distribution": [
+    {
+      "fund_code": {
+        "value": "AAC_FUND"
+      },
+      "percent": 100
+    }
+  ],
+  "note": "Invoice line for POL-01001"
+}

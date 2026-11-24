@@ -1,0 +1,26 @@
+{
+  "external_id": "ILL-67890",
+  "owner": "MAIN",
+  "partner": {
+    "value": "RELAIS"
+  },
+  "format": {
+    "value": "DIGITAL"
+  },
+  "citation_type": {
+    "value": "JOURNAL"
+  },
+  "title": "Journal of Library Science",
+  "author": "Various Authors",
+  "issn": "1234-5678",
+  "volume": "45",
+  "issue": "3",
+  "pages": "123-145",
+  "year": "2024",
+  "publisher": "Academic Publishing House",
+  "doi": "10.1234/jls.2024.45.3.123",
+  "level_of_service": {
+    "value": "RUSH_LOCAL"
+  },
+  "last_interest_date": "2025-02-28Z"
+}

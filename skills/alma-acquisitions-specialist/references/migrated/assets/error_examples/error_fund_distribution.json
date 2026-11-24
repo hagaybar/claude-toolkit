@@ -1,0 +1,49 @@
+{
+  "status_code": 400,
+  "error_message": "Invoice line fund percentage or amount must be declared, not both and not neither",
+  "errorList": {
+    "error": [
+      {
+        "errorCode": "400",
+        "errorMessage": "Invoice line fund percentage or amount must be declared, not both and not neither.",
+        "trackingId": "E01-5555555555"
+      }
+    ]
+  },
+  "context": {
+    "issue": "fund_distribution structure error in invoice line creation",
+    "incorrect_format": {
+      "fund_distribution": [
+        {
+          "fund_code": {
+            "value": "AAC_FUND"
+          },
+          "amount": 50.0,
+          "percent": 100
+        }
+      ]
+    },
+    "correct_format_option_1": {
+      "fund_distribution": [
+        {
+          "fund_code": {
+            "value": "AAC_FUND"
+          },
+          "percent": 100
+        }
+      ]
+    },
+    "correct_format_option_2": {
+      "fund_distribution": [
+        {
+          "fund_code": {
+            "value": "AAC_FUND"
+          },
+          "amount": 50.0
+        }
+      ]
+    },
+    "explanation": "Use EITHER 'percent' OR 'amount', never both. For single-fund allocations, use 'percent': 100. For multi-fund splits, use percentages (50/50) or explicit amounts.",
+    "solution": "Remove either 'amount' or 'percent' field from fund_distribution structure"
+  }
+}

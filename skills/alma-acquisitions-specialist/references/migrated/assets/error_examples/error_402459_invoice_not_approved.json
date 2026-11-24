@@ -1,0 +1,21 @@
+{
+  "status_code": 402459,
+  "error_message": "Error while trying to retrieve invoice",
+  "errorList": {
+    "error": [
+      {
+        "errorCode": "402459",
+        "errorMessage": "Error while trying to retrieve invoice",
+        "trackingId": "E01-1234567890"
+      }
+    ]
+  },
+  "cause": "Attempted to mark invoice as paid before it was approved/processed",
+  "solution": "Call approve_invoice(invoice_id) before mark_invoice_paid(invoice_id)",
+  "workflow": [
+    "1. Create invoice: create_invoice_simple(...)",
+    "2. Add lines: create_invoice_line_simple(...)",
+    "3. APPROVE FIRST: approve_invoice(invoice_id)",
+    "4. Then pay: mark_invoice_paid(invoice_id)"
+  ]
+}

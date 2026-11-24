@@ -1,0 +1,17 @@
+{
+  "number": "INV-2025-001",
+  "invoice_date": "2025-10-22Z",
+  "vendor": {
+    "value": "RIALTO"
+  },
+  "total_amount": 100.00,
+  "currency": {
+    "value": "ILS"
+  },
+  "payment": {
+    "prepaid": false,
+    "payment_status": {
+      "value": "NOT_PAID"
+    }
+  }
+}
