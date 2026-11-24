@@ -65,3 +65,11 @@ here, and campaign-specific selection/approval rules in the project. Keep privat
 fixtures/results ignored; version redacted evidence, code and test scenarios in the
 owning repository. Do not silently refresh installed skills or broaden runtime policy
 as part of merely evaluating them.
+
+## Placeholders and the private fixtures map
+
+The skills are public, so every real Alma identifier in them (records, libraries, PO lines) is a
+placeholder. To re-run a check against the record it was originally tested on, read the file that
+`$ALMA_FIXTURES` points to (JSON: placeholder → real Sandbox ID, plus the files using it). If the
+variable is not set, test on a record of your own and say so. **Never write a real ID into a skill**:
+record new evidence with a placeholder and add the mapping to the private file instead.

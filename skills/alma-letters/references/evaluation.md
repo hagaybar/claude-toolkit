@@ -1,5 +1,7 @@
 # Evaluation: alma-letters
 
+> **IDs in this file are placeholders** (this skills library is public). If `$ALMA_FIXTURES` is set, it points to the owner's private map from each placeholder to the real Alma Sandbox record; use it to re-run a check, and never write a real ID back here.
+
 - **Date:** 2026-11-24
 - **Reviewer:** agent, from repo evidence (not an independent validation; no new Sandbox calls)
 - **Source:** TAU-Alma-letters, branch `dev`: `docs/alma-xslt-findings.md` (each finding there

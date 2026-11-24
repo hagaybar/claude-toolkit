@@ -1,5 +1,7 @@
 # Evaluation: alma-resource-sharing
 
+> **IDs in this file are placeholders** (this skills library is public). If `$ALMA_FIXTURES` is set, it points to the owner's private map from each placeholder to the real Alma Sandbox record; use it to re-run a check, and never write a real ID back here.
+
 - **Date:** 2026-11-12 (Sandbox reads run 2026-11-12, ~08:30–09:00 IST)
 - **Reviewer:** agent self-review, following `alma-api-knowledge-evaluator` (not an independent validation)
 - **Tracks:** 1 (knowledge accuracy) fully; 2 (implementation alignment with AlmaAPITK) where cheap; 3 (agent behaviour) not run

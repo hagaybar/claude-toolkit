@@ -1,5 +1,7 @@
 # Evaluation of the migrated acquisitions material
 
+> **IDs in this file are placeholders** (this skills library is public). If `$ALMA_FIXTURES` is set, it points to the owner's private map from each placeholder to the real Alma Sandbox record; use it to re-run a check, and never write a real ID back here.
+
 Date: **2026-11-12**. Method: `alma-api-knowledge-evaluator` (track 1 knowledge accuracy,
 track 2 implementation alignment where cheap; track 3 agent usefulness not run).
 This is a self-review by one agent, not an independent validation.

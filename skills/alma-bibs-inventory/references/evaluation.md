@@ -1,5 +1,7 @@
 # alma-bibs-inventory — evaluation
 
+> **IDs in this file are placeholders** (this skills library is public). If `$ALMA_FIXTURES` is set, it points to the owner's private map from each placeholder to the real Alma Sandbox record; use it to re-run a check, and never write a real ID back here.
+
 **Date:** 2026-11-12 · **Type:** self-review (not independent) · **Tracks:** 1 (knowledge accuracy) and,
 where cheap, 2 (implementation alignment). Track 3 (agent behaviour) not run.
 

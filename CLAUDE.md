@@ -13,7 +13,8 @@ too because a scanner only catches shapes):
 - No institution codes or anything that ends in the institution's ID suffix.
 - No staff or patron names or emails (`name@example.edu` is fine).
 - Evidence in `evaluation.md` files names the *kind* of check ("read-only Sandbox GET, 2026-11-12")
-  and keeps real IDs out; detailed private evidence stays in the owner's private notes.
+  and uses placeholders. The real Sandbox records behind them are in the owner's private map,
+  found through `$ALMA_FIXTURES`; a new placeholder gets its mapping added there, never here.
 
 **Skills**
 - One skill per folder, `skills/<name>/SKILL.md` with `name` and a `description` that starts with
