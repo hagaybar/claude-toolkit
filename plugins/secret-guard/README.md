@@ -68,6 +68,8 @@ call, locally, before anything executes.
 | `commit:*` | A commit whose staged diff adds a known value or a token shape | — |
 | `push:*` | A push of commits (not yet on any remote) that add one | — |
 | `gh:*` | `gh pr` / `issue` / `release` / `gist` text or body files holding one | — |
+| `make-public` | `gh repo create --public`, `gh repo edit --visibility public`, a `gh api` write setting a repo public: the whole history becomes public at once | Scan the full history; the user changes visibility in their own terminal |
+| `gh:outbound-scan` | With `outboundScan` set: `gh` writes (issue, PR, release, comment bodies, `gh api` writes) the scanner flags, e.g. personal data | Remove it or use a placeholder |
 | `secret-value` | A real value anywhere in a command, a file write, or any tool's input (MCP tools included) | Refer to the variable by name |
 | `secret-shape` | A string that looks like a token, even an unknown one | Use a `<placeholder>` |
 
@@ -141,6 +143,7 @@ All in `/config` (or `/plugin configure secret-guard@hagay-mods`):
 | `redactOutput` | `true` | Scrub values and token shapes from stored rows |
 | `guardGit` | `true` | Scan staged changes, outgoing commits and `gh` bodies |
 | `loadEnvValues` | `true` | Learn real values at session start (in memory only) |
+| `outboundScan` | *(empty: off)* | A command that reads text bound for GitHub on stdin and exits non-zero to refuse it, e.g. `gitleaks stdin --no-banner --redact --config /path/rules.toml` for privacy rules |
 
 ## How it works
 
@@ -168,7 +171,7 @@ hooks/hooks.json                  points at the hooks module
 hooks/register.tsx                the hooks: start, tool.call, append, /guard, banner
 hooks/rules.ts                    pure detection logic (no engine calls) — the rules live here
 types/index.d.ts                  the mod's state contract
-tests/guard.test.ts               15 behaviour tests (fake values only)
+tests/guard.test.ts               18 behaviour tests (fake values only)
 docs/index.html                   the flow diagram (GitHub Pages)
 ```
 

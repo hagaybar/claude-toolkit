@@ -28,6 +28,7 @@ type Settings = {
   banner: string
   redactOutput: boolean
   guardGit: boolean
+  outboundScan: string[]
   loadEnvValues: boolean
   cfg: ReturnType<typeof makeConfig>
 }
@@ -44,6 +45,7 @@ function settingsOf(options: Record<string, unknown>): Settings {
     banner: String(options.banner ?? 'full'),
     redactOutput: options.redactOutput !== false,
     guardGit: options.guardGit !== false,
+    outboundScan: String(options.outboundScan ?? '').trim().split(/\s+/).filter(Boolean),
     loadEnvValues: options.loadEnvValues !== false,
     cfg: makeConfig({
       secretNames: String(options.secretNames ?? ''),
@@ -115,6 +117,27 @@ function tagged(list: Finding[], tag: string): Finding[] {
   return list.map(f => ({ ...f, rule: `${tag}:${f.rule}` }))
 }
 
+/** Pipe text bound for GitHub (the gh command and its body files) through the configured scanner. */
+async function outboundScan($: $, intent: Extract<GitIntent, { kind: 'gh' }>): Promise<Finding[]> {
+  const parts = [intent.text]
+  for (const file of intent.files) {
+    const text = await $.fs.read(file).catch(() => undefined)
+    if (typeof text === 'string') parts.push(text)
+  }
+  const scanner = S.outboundScan
+  const run = await $.process.run(scanner, { stdin: parts.join('\n'), timeoutMs: 20000 }).catch(() => undefined)
+  if (run === undefined) {
+    return [{ rule: 'gh:outbound-scan', reason: `the outbound scan (${scanner[0]}) could not run, so the GitHub text was held back` }]
+  }
+  if (run.exitCode === 0) return []
+  const rules = [...new Set([...(run.stdout + run.stderr).matchAll(/RuleID:\s*(\S+)/g)].map(m => m[1]))]
+  return [{
+    rule: 'gh:outbound-scan',
+    reason: `the outbound scan flagged the GitHub text${rules.length ? ` (${rules.join(', ')})` : ''}: possible personal data or a secret`,
+    hint: 'remove it, or use a placeholder; the user can post it from their own terminal if it is meant to be there',
+  }]
+}
+
 async function checkGit($: $, intent: GitIntent, base: string): Promise<Finding[]> {
   const cfg = S.cfg
   if (intent.kind === 'gh') {
@@ -127,6 +150,7 @@ async function checkGit($: $, intent: GitIntent, base: string): Promise<Finding[
       const text = await $.fs.read(file).catch(() => undefined)
       if (typeof text === 'string') out.push(...tagged(scanText(text, known, `the GitHub text from ${file}`), 'gh'))
     }
+    if (intent.outbound && S.outboundScan.length > 0) out.push(...(await outboundScan($, intent)))
     return out
   }
 
