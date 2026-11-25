@@ -21,6 +21,12 @@ claim for a production change.
 - `GET /almaws/v1/conf/letters/{code}` returns the letter's XSL (escaped) plus provenance:
   `update_date`, `updated_by`, `customized`.
 - **Components are letters too:** read one by its full code, e.g. `footer.xsl`.
+- **`400` with `40166411` ("The parameter letterCode is invalid") means a wrong code**, not a letter
+  the API can't reach. Local file names are not always Alma's codes (a New Gen letter was kept
+  for months as `UserNotificationsLetterNG.xsl`; Alma's code was `NotificationsNgLetter`, and the
+  400 was misread as "a different subsystem"). Before concluding a letter is unreachable, look
+  the code up in `GET conf/letters`, matching by XSL if the name differs. A code missing from the
+  list may also be a letter Alma no longer has.
 - Use **almaapitk** (PyPI, 0.7.0+) rather than raw HTTP: `Configuration(client).list_letters()`,
   `get_letter(code)` and `update_letter(code, letter)`. JSON reads wrap some fields as
   `{"value": ...}` (`enabled`, `customized`, `updated_by`); the XSL is the `xsl` key.
@@ -95,6 +101,7 @@ library fields only, never patron values.
 - Reading `languages/string` as the patron's language.
 - Signing from `user/library_code`.
 - Byte-comparing an XSL fetched from Alma with the repo copy.
+- Reading a `400` on a letter code as "not available through the API" instead of "wrong code".
 
 ## TAU specifics
 
