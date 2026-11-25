@@ -21,6 +21,14 @@ claim for a production change.
 - `GET /almaws/v1/conf/letters/{code}` returns the letter's XSL (escaped) plus provenance:
   `update_date`, `updated_by`, `customized`.
 - **Components are letters too:** read one by its full code, e.g. `footer.xsl`.
+- Use **almaapitk** (PyPI, 0.7.0+) rather than raw HTTP: `Configuration(client).list_letters()`,
+  `get_letter(code)` and `update_letter(code, letter)`. JSON reads wrap some fields as
+  `{"value": ...}` (`enabled`, `customized`, `updated_by`); the XSL is the `xsl` key.
+- `GET /almaws/v1/conf/letters` is **unpaged**: one call returns every letter (all channels);
+  `limit`/`offset` are ignored.
+- The letter **PUT accepts XML only**; a JSON body fails with `60105` ("JSON is not supported for
+  this API"). It replaces the whole letter, so read it, change it, send it all back.
+  `update_letter` converts to XML for you.
 - Treat production letters as **read-only**; change production only by an upload in Alma's UI,
   after a Sandbox test. (TAU rule; see the repo's CLAUDE.md.)
 - Letters get edited directly in Alma, so a repo copy can drift from production. When
