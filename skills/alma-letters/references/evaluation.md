@@ -31,3 +31,6 @@ Verdicts: **repo-verified** (proven in the TAU work; evidence named) · **unveri
 | L-14 | DD responsible library = `organization_unit/org_scope/library_id` | repo-verified | 2 DD fingerprints |
 | L-15 | `user/default_language`, `request/language` as language sources | unverified | mapping CSV only |
 | L-16 | Purpose of `user_preferred_language_original_value` | unverified | — |
+| L-17 | almaapitk `get_letter` / `list_letters` read letters; JSON wraps fields as `{"value": ...}`, XSL under `xsl` | repo-verified | TAU-Alma-letters tools switched to almaapitk 0.7.0, 2026-11-25: read-only production GETs, output byte-identical to the previous raw-HTTP tools |
+| L-18 | `GET conf/letters` is unpaged (all letters in one call) | repo-verified | same run: one call returned every letter; almaapitk issue #139 (Sandbox) |
+| L-19 | Letter PUT is XML-only (`60105` for JSON); full replace | unverified here | almaapitk issue #114 and `update_letter` docstring; not re-tested for this skill |
