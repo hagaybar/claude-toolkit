@@ -205,12 +205,35 @@ describe('github exposure', () => {
       'gh repo create demo --public --source . --push',
       'gh repo edit owner/demo --visibility public',
       'gh api -X PATCH repos/owner/demo -f visibility=public',
+      'for r in a b; do gh repo edit owner/$r --visibility public; done',
     ]) {
       const r = await call($, { tool: 'Bash', command })
       expect(String(r.deny)).toContain('make-public')
     }
     const ok = await call($, { tool: 'Bash', command: 'gh repo create demo --private --source .' })
     expect(ok.deny).toBeUndefined()
+  })
+
+  test('blocks deleting a repository, allows deleting a branch or a comment', async ($, on) => {
+    world(on)
+    for (const command of [
+      'gh repo delete owner/demo --yes',
+      'for r in a b; do gh repo delete owner/$r --yes; done',
+      'gh api -X DELETE repos/owner/demo',
+      'gh api --method DELETE /repos/owner/demo',
+      'gh api repos/owner/demo -X DELETE',
+    ]) {
+      const r = await call($, { tool: 'Bash', command })
+      expect(String(r.deny)).toContain('delete-repo')
+    }
+    for (const command of [
+      'gh api -X DELETE repos/owner/demo/git/refs/heads/old-branch',
+      'gh api -X DELETE repos/owner/demo/issues/comments/5',
+      'gh repo view owner/demo',
+    ]) {
+      const ok = await call($, { tool: 'Bash', command })
+      expect(ok.deny).toBeUndefined()
+    }
   })
 
   test('the outbound scan refuses flagged GitHub text and passes clean text', { options: { outboundScan: 'scanner --stdin' } }, async ($, on) => {
