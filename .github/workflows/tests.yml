@@ -1,0 +1,33 @@
+# Risk map P16 (agent-sandbox): GitHub runs the tests on every push and PR, so a pass is checked
+# by GitHub, not taken from the agent's report. secret-guard runs in Claude Code's own plugin test
+# harness (no login needed); html-dashboard's engine with pytest.
+name: tests
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  secret-guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code
+      - name: Plugin tests
+        working-directory: plugins/secret-guard
+        run: claude plugin test .
+  html-dashboard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pytest
+      - run: python -m pytest -q skills/html-dashboard
