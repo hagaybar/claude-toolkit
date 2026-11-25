@@ -1,6 +1,6 @@
 {
   "name": "secret-guard",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Keeps API keys, tokens and passwords out of the transcript, tool output, files, commits, PRs and issues.",
   "types": "./types/index.d.ts",
   "userConfig": {

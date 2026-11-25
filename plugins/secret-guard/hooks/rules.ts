@@ -252,9 +252,14 @@ export function checkBash(command: string, known: readonly Known[], c: Config): 
       }
     }
 
+    // gh behind a shell keyword (a loop body, a condition) is still gh
+    const kw = w.findIndex(x => !/^(do|then|else|elif|time|command|exec|!|\{)$/.test(x))
+    const g = kw < 0 ? [] : w.slice(kw)
+
     // 5. making a repository public exposes its whole history at once
-    if (verb === 'gh') {
+    if (g[0] === 'gh') {
       const t = seg.text
+      const w = g
       const sub = w.slice(1, 3).join(' ')
       const pub =
         (sub === 'repo create' && w.includes('--public')) ||
@@ -265,6 +270,24 @@ export function checkBash(command: string, known: readonly Known[], c: Config): 
           rule: 'make-public',
           reason: 'this would make a GitHub repository public, exposing its whole history',
           hint: 'scan the full history first (gitleaks git); the user changes visibility in their own terminal',
+        })
+      }
+    }
+
+    // 5b. deleting a repository is the user's act (risk map P12), even with their OK in chat
+    if (g[0] === 'gh') {
+      const t = seg.text
+      const w = g
+      const del =
+        w.slice(1, 3).join(' ') === 'repo delete' ||
+        (w[1] === 'api' &&
+          /(-X|--method)(=|\s+)["']?DELETE\b/i.test(t) &&
+          w.some(x => /^["']?\/?repos\/[^/\s]+\/[^/\s"']+["']?$/.test(x)))
+      if (del) {
+        out.push({
+          rule: 'delete-repo',
+          reason: 'this would delete a GitHub repository; only the user deletes repositories',
+          hint: 'save a bundle first (git clone --mirror); hand the user the command to run in their own terminal',
         })
       }
     }
